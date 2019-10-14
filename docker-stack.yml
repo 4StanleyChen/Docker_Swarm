@@ -2,7 +2,7 @@ version: "3"
 services:
 
   web:
-      image: twtrubiks/my_django
+      image: qq92314/aaatest
       # volumes:
       #   - api-data:/docker_api
       ports:
