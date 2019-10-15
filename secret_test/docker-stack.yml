@@ -7,10 +7,6 @@ services:
         POSTGRES_PASSWORD_FILE: /run/secrets/my_password
       ports:
         - "5432:5432"
-      networks:
-        - backend
-      volumes:
-        - pgdata:/var/lib/postgresql/data/
       secrets:
         - my_password
 
