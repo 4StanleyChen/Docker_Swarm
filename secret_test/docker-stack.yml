@@ -1,37 +1,35 @@
-version: "3.1"
+version: '3.1'
 services:
-  
-  db:
-    image: mysql
-    container_name: mydb
-    volumes:
-      - /docker-entrypoint-initdb.d
-    environment:
-      MYSQL_PASSWORD_FILE: /run/secrets/my_password
-    ports:
-      - '3306:3306'
-    secrets:
-        - my_password
 
-  web:
-      image: qq92314/aaatest:aaa
-      # volumes:
-      #   - api-data:/docker_api
+    db:
+      image: postgres
+      environment:
+        POSTGRES_PASSWORD_FILE: /run/secrets/my_password
       ports:
-        - "8000:8000"
+        - "5432:5432"
       networks:
         - backend
-      depends_on:
-        - db
-      deploy:
-        replicas: 5
-        update_config:
-          parallelism: 2
-        restart_policy:
-          condition: on-failure
+      volumes:
+        - pgdata:/var/lib/postgresql/data/
       secrets:
         - my_password
 
-  scerets:
-     my_password:
-         external: true
+    web:
+      image: qq92314/docker_secrets_test
+      ports:
+        - "8000:8000"
+      deploy:
+          replicas: 5
+          update_config:
+              parallelism: 2
+          restart_policy:
+              condition: on-failure
+      secrets:
+        - my_password
+      depends_on:
+        - db
+
+
+secrets:
+    my_password:
+        external: true
